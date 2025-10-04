@@ -65,5 +65,14 @@ vim.lsp.config('lua_ls', {
 	}
 })
 vim.lsp.enable({ "lua_ls" })
-vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
-vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+
+-- Oil + Mini Pick
+vim.pack.add({ { src='https://github.com/stevearc/oil.nvim', }, {src = 'https://github.com/nvim-mini/mini.pick'} })
+require 'oil'.setup ()
+require 'mini.pick'.setup ()
+vim.keymap.set('n', '<leader>ff', ':Pick files<CR>')
+vim.keymap.set('n', '<leader>hh', ':Pick help<CR>')
+
+
