@@ -10,8 +10,7 @@ vim.keymap.set('n', '<leader>o', ':update<CR>:source<CR>')
 vim.keymap.set('n', '<leader>w', '<C-w>')
 
 -- Visuals
-vim.pack.add({ { src = "https://github.com/vague2k/vague.nvim" } })
-vim.cmd([[colorscheme vague]])
+vim.cmd([[colorscheme darkblue]])
 vim.cmd([[:hi statusline guibg=GREEN guifg=BLACK]])
 
 -- LSP setup
@@ -30,11 +29,7 @@ vim.lsp.config('lua_ls', {
 
 		client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
 			runtime = {
-				-- Tell the language server which version of Lua you're using (most
-				-- likely LuaJIT in the case of Neovim)
 				version = 'LuaJIT',
-				-- Tell the language server how to find Lua modules same way as Neovim
-				-- (see `:h lua-module-load`)
 				path = {
 					'lua/?.lua',
 					'lua/?/init.lua',
@@ -45,18 +40,7 @@ vim.lsp.config('lua_ls', {
 				checkThirdParty = false,
 				library = {
 					vim.env.VIMRUNTIME
-					-- Depending on the usage, you might want to add additional paths
-					-- here.
-					-- '${3rd}/luv/library'
-					-- '${3rd}/busted/library'
 				}
-				-- Or pull in all of 'runtimepath'.
-				-- NOTE: this is a lot slower and will cause issues when working on
-				-- your own configuration.
-				-- See https://github.com/neovim/nvim-lspconfig/issues/3189
-				-- library = {
-				--   vim.api.nvim_get_runtime_file('', true),
-				-- }
 			}
 		})
 	end,
@@ -64,15 +48,41 @@ vim.lsp.config('lua_ls', {
 		Lua = {}
 	}
 })
-vim.lsp.enable({ "lua_ls" })
-vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
+vim.lsp.enable({ "lua_ls", "ruff_lsp", "tinymist" })
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
 
 -- Oil + Mini Pick
-vim.pack.add({ { src='https://github.com/stevearc/oil.nvim', }, {src = 'https://github.com/nvim-mini/mini.pick'} })
-require 'oil'.setup ()
-require 'mini.pick'.setup ()
+vim.pack.add({ { src = 'https://github.com/stevearc/oil.nvim', }, { src = 'https://github.com/nvim-mini/mini.pick' } })
+require 'oil'.setup()
+require 'mini.pick'.setup()
 vim.keymap.set('n', '<leader>ff', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>hh', ':Pick help<CR>')
 
+vim.api.nvim_create_autocmd('LspAttach', {
+	group = vim.api.nvim_create_augroup('my.lsp', {}),
+	callback = function(args)
+		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+		-- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
+		if client:supports_method('textDocument/completion') then
+			-- Optional: trigger autocompletion on EVERY keypress. May be slow!
+			-- local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+			-- client.server_capabilities.completionProvider.triggerCharacters = chars
+			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
 
+			vim.keymap.set('i', '<C-n>', function()
+				vim.lsp.completion.trigger()
+			end, { buffer = args.buf })
+		end
+		-- Usually not needed if server supports "textDocument/willSaveWaitUntil".
+		if not client:supports_method('textDocument/willSaveWaitUntil')
+		    and client:supports_method('textDocument/formatting') then
+			vim.api.nvim_create_autocmd('BufWritePre', {
+				group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+				buffer = args.buf,
+				callback = function()
+					vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+				end,
+			})
+		end
+	end,
+})
