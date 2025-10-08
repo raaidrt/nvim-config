@@ -58,8 +58,8 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, si
 vim.pack.add({ { src = 'https://github.com/stevearc/oil.nvim', }, { src = 'https://github.com/nvim-mini/mini.pick' } })
 require 'oil'.setup()
 require 'mini.pick'.setup()
-vim.keymap.set('n', '<leader>ff', ':Pick files<CR>')
-vim.keymap.set('n', '<leader>hh', ':Pick help<CR>')
+vim.keymap.set('n', '<leader>e', '<Cmd>Pick files<CR>')
+vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('my.lsp', {}),
@@ -120,3 +120,6 @@ vim.keymap.set('n', '<leader>cc', ':update<CR>:make!<CR>')
 -- Git Client
 vim.pack.add({ { src = "https://github.com/nvim-lua/plenary.nvim" } })
 vim.pack.add({ { src = "https://github.com/NeogitOrg/neogit" } })
+vim.keymap.set('n', '<leader>gg', '<Cmd>bn<CR><Cmd>Neogit<CR>')
+
+
