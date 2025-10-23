@@ -11,10 +11,13 @@ vim.g.mapleader = ' '
 -- Default Keybindings
 vim.keymap.set('n', '<leader>o', ':update<CR>:source<CR>')
 vim.keymap.set('n', '<leader>w', '<C-w>')
+vim.keymap.set('n', '<leader>w/', '<C-w>v')
+vim.keymap.set('n', '<leader>w-', '<C-w>s')
 
 -- Visuals
-vim.cmd([[colorscheme darkblue]])
-vim.cmd([[:hi statusline guibg=GREEN guifg=BLACK]])
+vim.pack.add({ { src = "https://github.com/shaunsingh/nord.nvim" } })
+vim.cmd([[colorscheme nord]])
+vim.cmd([[:hi statusline guibg=#8FBCBB guifg=BLACK]])
 
 -- LSP setup
 vim.pack.add({ { src = "https://github.com/neovim/nvim-lspconfig" } })
@@ -51,7 +54,14 @@ vim.lsp.config('lua_ls', {
     Lua = {}
   }
 })
-vim.lsp.enable({ "lua_ls", "ruff", "tinymist" })
+
+vim.lsp.config["tinymist"] = {
+  cmd = { "tinymist" },
+  filetypes = { "typst" },
+}
+
+vim.lsp.enable({ "lua_ls", "ruff", "tinymist", "zls" })
+
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
 
 -- Oil + Mini Pick
@@ -101,6 +111,7 @@ vim.api.nvim_create_augroup('FileMakeCmd', {
 
 vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
   pattern = '*',
+  group = 'FileMakeCmd',
   callback = function()
     vim.opt_local.makeprg = 'make'
   end
@@ -109,6 +120,7 @@ vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
 for pattern, command in pairs(compilation_commands) do
   vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
     pattern = pattern,
+    group = 'FileMakeCmd',
     callback = function()
       vim.opt_local.makeprg = command
     end
@@ -117,9 +129,32 @@ end
 
 vim.keymap.set('n', '<leader>cc', ':update<CR>:make!<CR>')
 
+-- Custom Formatting
+local formatting_commands = {
+  ['*.typ'] = 'typstyle --inplace %'
+}
+
+vim.api.nvim_create_augroup('FormatCmd', {
+  clear = false
+})
+
+for pattern, command in pairs(formatting_commands) do
+  vim.api.nvim_create_autocmd('BufWritePost', {
+    pattern = pattern,
+    group = 'FormatCmd',
+    callback = function()
+      local cmd = vim.fn.expand(command)
+      vim.fn.jobstart(cmd)
+    end
+  })
+end
+
 -- Git Client
 vim.pack.add({ { src = "https://github.com/nvim-lua/plenary.nvim" } })
 vim.pack.add({ { src = "https://github.com/NeogitOrg/neogit" } })
-vim.keymap.set('n', '<leader>gg', '<Cmd>bn<CR><Cmd>Neogit<CR>')
+vim.keymap.set('n', '<leader>gg', '<Cmd>Neogit<CR>')
 
-
+-- Tabs
+vim.keymap.set('n', '<leader>t', '<Cmd>tabnew<CR><Cmd>Pick files<CR>')
+vim.keymap.set('n', '<leader>]', '<Cmd>+tabnext<CR>')
+vim.keymap.set('n', '<leader>[', '<Cmd>-tabnext<CR>')
