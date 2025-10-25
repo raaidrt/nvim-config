@@ -109,14 +109,6 @@ vim.api.nvim_create_augroup('FileMakeCmd', {
   clear = false
 })
 
-vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
-  pattern = '*',
-  group = 'FileMakeCmd',
-  callback = function()
-    vim.opt_local.makeprg = 'make'
-  end
-})
-
 for pattern, command in pairs(compilation_commands) do
   vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
     pattern = pattern,
@@ -143,8 +135,18 @@ for pattern, command in pairs(formatting_commands) do
     pattern = pattern,
     group = 'FormatCmd',
     callback = function()
-      local cmd = vim.fn.expand(command)
-      vim.fn.jobstart(cmd)
+      local filename = vim.fn.expand('%')
+      local cmd = command:gsub('%%', filename)
+      vim.fn.jobstart(cmd, {
+        on_exit = function(_, exit_code)
+          if exit_code == 0 then
+            -- Reload the buffer from disk to see formatting changes
+            vim.cmd('checktime')
+          else
+            vim.notify('Formatting failed with exit code: ' .. exit_code, vim.log.levels.ERROR)
+          end
+        end
+      })
     end
   })
 end
