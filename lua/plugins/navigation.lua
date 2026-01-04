@@ -23,6 +23,19 @@ wk.add({
   { '<leader>sh', function() Snacks.picker.help() end, desc = 'Search help' },
 })
 
+-- Buffer keybindings (<leader>b)
+wk.add({
+  { '<leader>bb', '<cmd>b#<cr>', desc = 'Alternate buffer' },
+  { '<leader>bl', function() Snacks.picker.buffers() end, desc = 'List buffers' },
+  { '<leader>bd', '<cmd>bdelete<cr>', desc = 'Delete buffer' },
+  { '<leader>bD', '<cmd>bdelete!<cr>', desc = 'Delete buffer (force)' },
+  { '<leader>bn', '<cmd>bnext<cr>', desc = 'Next buffer' },
+  { '<leader>bp', '<cmd>bprevious<cr>', desc = 'Previous buffer' },
+  { '<leader>bs', '<cmd>write<cr>', desc = 'Save buffer' },
+  { '<leader>bw', '<cmd>write | bdelete<cr>', desc = 'Save and close' },
+  { '<leader>bo', '<cmd>%bdelete | edit# | bdelete#<cr>', desc = 'Close other buffers' },
+})
+
 -- Tab new with file picker
 wk.add({
   { '<leader>tn', function()

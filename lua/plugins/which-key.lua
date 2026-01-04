@@ -30,6 +30,9 @@ wk.add({
   { '<leader>le', vim.diagnostic.open_float, desc = 'Show diagnostic' },
   { '<leader>lq', vim.diagnostic.setloclist, desc = 'Diagnostics to loclist' },
 
+  -- Buffer (<leader>b) - keybindings registered in navigation.lua after Snacks is loaded
+  { '<leader>b', group = 'Buffer' },
+
   -- Search (<leader>s) - registered in navigation.lua after Snacks is loaded
   { '<leader>s', group = 'Search' },
 
