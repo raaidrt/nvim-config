@@ -19,7 +19,8 @@ A modular Neovim configuration using Lua.
 │       ├── navigation.lua      # Oil, Snacks picker, Neo-tree
 │       ├── git.lua             # Neogit
 │       ├── treesitter.lua      # TreeSitter configuration
-│       └── statusline.lua      # Lualine statusline
+│       ├── statusline.lua      # Lualine statusline
+│       └── claudecode.lua      # Claude Code AI assistant
 └── README.md
 ```
 
@@ -65,6 +66,19 @@ Leader key: `<Space>`
 |-----|--------|
 | `<leader>gg` | Open Neogit |
 
+### AI / Claude (`<leader>a`)
+| Key | Action |
+|-----|--------|
+| `<leader>ac` | Toggle Claude Code terminal |
+| `<leader>af` | Focus Claude (smart toggle) |
+| `<leader>ar` | Resume previous session |
+| `<leader>aR` | Continue session |
+| `<leader>am` | Select model |
+| `<leader>ab` | Add current buffer to context |
+| `<leader>as` | Send selection to Claude (visual) |
+| `<leader>aa` | Accept diff |
+| `<leader>ad` | Reject diff |
+
 ### Code (`<leader>c`)
 | Key | Action |
 |-----|--------|
@@ -96,6 +110,7 @@ Leader key: `<Space>`
 | [neogit](https://github.com/NeogitOrg/neogit) | Git client |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting |
 | [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline |
+| [claudecode.nvim](https://github.com/coder/claudecode.nvim) | Claude Code AI assistant |
 
 ## LSP Servers
 
@@ -114,3 +129,18 @@ The `:make` command is configured per filetype:
 - `*.py` - `uv run %`
 
 Use `<leader>cc` to compile the current file.
+
+## Claude Code
+
+The [claudecode.nvim](https://github.com/coder/claudecode.nvim) plugin provides integration with Claude Code CLI.
+
+### Requirements
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and configured
+
+### Usage
+
+1. `<leader>ac` - Open Claude Code in a split terminal
+2. `<leader>ab` - Add current buffer to Claude's context
+3. In visual mode, select code and press `<leader>as` to send it to Claude
+4. When Claude proposes changes, use `<leader>aa` to accept or `<leader>ad` to reject

@@ -69,9 +69,9 @@ vim.lsp.config["julia_lsp"] = {
   root_markers = { "Project.toml", ".git" },
 }
 
--- Python: ty (type checker)
-vim.lsp.config["ty"] = {
-  cmd = { "ty", "server" },
+-- Python: pyrefly (type checker)
+vim.lsp.config["pyrefly"] = {
+  cmd = { "pyrefly", "lsp" },
   filetypes = { "python" },
   root_markers = { "pyproject.toml", ".git" },
 }
@@ -89,4 +89,4 @@ vim.lsp.config["ruff"] = {
 }
 
 -- Enable LSP servers
-vim.lsp.enable({ "lua_ls", "ty", "ruff", "tinymist", "zls", "julia_lsp" })
+vim.lsp.enable({ "lua_ls", "pyrefly", "ruff", "tinymist", "zls", "julia_lsp" })

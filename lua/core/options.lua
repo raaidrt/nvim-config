@@ -10,3 +10,4 @@ vim.o.expandtab = true
 vim.o.swapfile = false
 vim.o.termguicolors = true
 vim.o.colorcolumn = "80"
+vim.o.autoread = true

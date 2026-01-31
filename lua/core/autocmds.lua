@@ -29,3 +29,5 @@ for pattern, command in pairs(compilation_commands) do
     end
   })
 end
+
+vim.o.autoread = true
