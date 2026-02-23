@@ -9,6 +9,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
       vim.bo[args.buf].completeopt = "menu,menuone,noinsert,noselect"
     end
+
+    if client:supports_method('textDocument/formatting') then
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ id = client.id, bufnr = args.buf })
+        end,
+      })
+    end
   end,
 })
 

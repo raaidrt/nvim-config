@@ -4,7 +4,7 @@ vim.pack.add({ { src = "https://github.com/nvim-lualine/lualine.nvim" } })
 
 require('lualine').setup({
   options = {
-    theme = 'everforest',
+    theme = 'auto',
     section_separators = '',
     component_separators = '|'
   }

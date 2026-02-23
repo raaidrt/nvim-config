@@ -83,7 +83,7 @@ vim.lsp.config["ruff"] = {
   root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
   settings = {
     ruff = {
-      lint = { enable = false },
+      lint = { enable = true },
     }
   }
 }
