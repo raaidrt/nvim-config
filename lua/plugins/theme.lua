@@ -1,9 +1,8 @@
--- Zenbones Theme (seoulbones light)
+-- Everforest Theme
 vim.pack.add({
-  { src = "https://github.com/zenbones-theme/zenbones.nvim" },
-  { src = "https://github.com/rktjmp/lush.nvim" },
+  { src = "https://github.com/sainnhe/everforest" },
 })
 
-vim.o.background = "light"
+vim.o.background = "dark"
 
-vim.cmd([[colorscheme seoulbones]])
+vim.cmd([[colorscheme everforest]])

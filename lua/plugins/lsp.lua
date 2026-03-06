@@ -88,5 +88,12 @@ vim.lsp.config["ruff"] = {
   }
 }
 
+-- Rust Analyzer
+vim.lsp.config["rust_analyzer"] = {
+  cmd = { "rust-analyzer" },
+  filetypes = { "rust" },
+  root_markers = { "Cargo.toml", "rust-project.json", ".git" },
+}
+
 -- Enable LSP servers
-vim.lsp.enable({ "lua_ls", "pyrefly", "ruff", "tinymist", "zls", "julia_lsp" })
+vim.lsp.enable({ "lua_ls", "pyrefly", "ruff", "tinymist", "zls", "julia_lsp", "rust_analyzer" })
