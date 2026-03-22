@@ -5,7 +5,7 @@ require('nvim-treesitter').setup({
   install_dir = vim.fn.stdpath('data') .. '/site'
 })
 
-require('nvim-treesitter').install({ 'wgsl' })
+require('nvim-treesitter').install({ 'wgsl', 'rust', 'python' })
 
 -- Enable treesitter for WGSL files
 vim.api.nvim_create_autocmd('FileType', {
